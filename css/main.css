@@ -8,3 +8,14 @@ canvas
 {
 	display:block;
 }
+
+#wrapper
+{
+	overflow:auto;
+}
+
+#wrapper, canvas
+{
+	width:100vw;
+	height:100vh;
+}
