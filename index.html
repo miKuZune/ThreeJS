@@ -105,21 +105,35 @@
 			mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
 			
 
-			raycaster.setFromCamera(mouse, camera);
+			CheckForIntersects(mouse.x, mouse.y);
+			
+		}
+
+		function onTouch(event)
+		{
+			event.preventDefault();
+			integer++;
+			scoreOutput.textContent = "Score: " + integer; 
+
+			var x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+			var y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+
+			CheckForIntersects(x,y);
+		}
+
+		function CheckForIntersects(x, y)
+		{
+			position = new THREE.Vector2(x,y);
+			raycaster.setFromCamera(position, camera);
 
 			var intersects = raycaster.intersectObjects(scene.children, true);
 			for (var i = 0; i < intersects.length; i++)
 			{
 				intersects[i].object.material.color.set(0xff0000);
 			}
-			
 		}
 
-		function onTouch(event)
-		{
-			integer++;
-			scoreOutput.textContent = "Score: " + integer; 
-		}
+		
 
 		render();
 
