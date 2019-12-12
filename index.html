@@ -14,12 +14,17 @@
 	<div id="wrapper">
 
 	</div>
+
+	<p id="score"> Score: 0 </p>
 	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js" SameSite=None></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js" SameSite=None></script>
 
 	<script>
 		var scene = new THREE.Scene();
+		var integer = 0;
+		var scoreOutput = document.getElementById("score");
+		scoreOutput.textContent = "Score: " + integer;
 
 		var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight, 0.1, 1000);
 		camera.position.z = 5;
@@ -107,11 +112,13 @@
 			{
 				intersects[i].object.material.color.set(0xff0000);
 			}
+			
 		}
 
 		function onTouch(event)
 		{
-			event.preventDefault();
+			integer++;
+			scoreOutput.textContent = "Score: " + integer; 
 		}
 
 		render();
@@ -121,7 +128,7 @@
 		
 
 		document.body.addEventListener('mousedown', onMouseDown);
-		document.body.addEventListener('touchstart', onMouseDown);
+		document.body.addEventListener('touchstart', onTouch);
 
 		
 
