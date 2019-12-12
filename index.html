@@ -88,7 +88,7 @@
 			}
 		}
 
-		function onMouseMove(event)
+		function onMouseDown(event)
 		{
 			event.preventDefault();
 
@@ -105,13 +105,19 @@
 			}
 		}
 
+		function onTouch(event)
+		{
+			event.preventDefault();
+		}
+
 		render();
 
 		this.tl = new TimelineMax({paused: true});
 		ResetAnimation();
 		
 
-		document.body.addEventListener('click', onMouseMove);
+		document.body.addEventListener('mousedown', onMouseDown);
+		document.body.addEventListener('touchstart', onMouseDown);
 
 		
 
