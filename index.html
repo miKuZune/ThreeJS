@@ -33,7 +33,33 @@
 		renderer.setClearColor("#e5e5e5");
 		renderer.setSize(window.innerWidth, window.innerHeight);
 
+		var currentCubeID = 0;
+
 		document.getElementById("wrapper").appendChild(renderer.domElement);
+
+		var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.x = -5;
+		mesh.position.y = 0;
+		mesh.position.z = -5;
+
+		mesh.rotation.set((Math.random() * 10), (Math.random() * 10),(Math.random() * 10));
+
+		scene.add(mesh);
+
+		var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.x = 5;
+		mesh.position.y = 0;
+		mesh.position.z = 5;
+
+		mesh.rotation.set((Math.random() * 10), (Math.random() * 10),(Math.random() * 10));
+
+		scene.add(mesh);
+
+		var timeBetweenNewObjs = 2500;
+		var decrementOfTime = 0.75;
+		var minValue = 350;
 
 
 		window.addEventListener('resize', () => {
@@ -51,20 +77,14 @@
 
 
 		var meshArray = new Array(15);
-		
+
+		var date = new Date();
+		var counter = Date.now();		
 
 
 		for(var i = 0; i < 15; i++)
 		{
-			var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
-			var mesh = new THREE.Mesh(geometry, material);
-			mesh.position.x = (Math.random() - 0.5) * 10;
-			mesh.position.y = (Math.random() - 0.5) * 10;
-			mesh.position.z = (Math.random() - 0.5) * 10;
-
-			mesh.rotation.set((Math.random() * 10), (Math.random() * 10),(Math.random() * 10));
-
-			scene.add(mesh);
+			var mesh = SpawnNewCube();
 			meshArray[i] = mesh;
 		}
 
@@ -85,6 +105,17 @@
 			requestAnimationFrame(render);
 			renderer.render(scene,camera);
 			RotateObjects();
+
+			var timeSinceLastMoved = Date.now() - counter;
+
+			if(Date.now() - counter > timeBetweenNewObjs)
+			{
+				MoveCubeToCenter();
+				counter = Date.now();
+			}
+			
+			if(timeBetweenNewObjs <= minValue){timeBetweenNewObjs = minValue;}
+			else { timeBetweenNewObjs -= decrementOfTime; }
 		}
 
 		function RotateObjects()
@@ -102,19 +133,15 @@
 			event.preventDefault();
 
 			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-			mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 			
-
 			CheckForIntersects(mouse.x, mouse.y);
-			
 		}
 
 		function onTouch(event)
 		{
 			event.preventDefault();
-			integer++;
-			scoreOutput.textContent = "Score: " + integer; 
-
+			
 			var x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
 			var y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
 
@@ -130,28 +157,46 @@
 			for (var i = 0; i < intersects.length; i++)
 			{
 				intersects[i].object.material.color.set(0xff0000);
+				intersects[i].object.position.x = 100;
+				IncrementScore();
 			}
 		}
 
-		
+		function IncrementScore()
+		{
+			integer++;
+			scoreOutput.textContent = "Score: " + integer; 
+		}
+
+		function SpawnNewCube()
+		{
+			var material = new THREE.MeshLambertMaterial({color: 0xff0000});
+			var mesh = new THREE.Mesh(geometry, material);
+			mesh.position.x = 1000;
+			mesh.position.y = 0;
+			mesh.position.z = 0;
+
+			mesh.rotation.set((Math.random() * 10), (Math.random() * 10),(Math.random() * 10));
+
+			scene.add(mesh);
+			return mesh;
+		}
+
+
+		function MoveCubeToCenter()
+		{
+			meshArray[currentCubeID].position.x = (Math.random() - 0.5) * 5;
+			meshArray[currentCubeID].position.y = (Math.random() - 0.5) * 1.5;
+			meshArray[currentCubeID].position.z = (Math.random() - 0.5) * 5;
+
+			currentCubeID++;
+			if(currentCubeID >= meshArray.length){currentCubeID = 0;}
+		}
 
 		render();
-
-		this.tl = new TimelineMax({paused: true});
-		ResetAnimation();
 		
-
 		document.body.addEventListener('mousedown', onMouseDown);
 		document.body.addEventListener('touchstart', onTouch);
-
-		
-
-		function ResetAnimation()
-		{
-			this.tl.to(this.mesh.scale, 1, {x: 2, ease: Expo.easeOut});
-			this.tl.to(this.mesh.scale, 1, {x: .5, ease: Expo.easeOut});
-			this.tl.to(this.mesh.scale, 1, {x: 1, ease: Expo.easeOut});
-		}
 	</script>
 
 </body>
