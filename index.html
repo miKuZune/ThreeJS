@@ -39,10 +39,12 @@
 
 		
 		var geometry = new THREE.BoxGeometry(1,1,1);
+
+
+		var meshArray = new Array(15);
 		
 
 
-		meshX = -10;
 		for(var i = 0; i < 15; i++)
 		{
 			var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
@@ -50,8 +52,11 @@
 			mesh.position.x = (Math.random() - 0.5) * 10;
 			mesh.position.y = (Math.random() - 0.5) * 10;
 			mesh.position.z = (Math.random() - 0.5) * 10;
+
+			mesh.rotation.set((Math.random() * 10), (Math.random() * 10),(Math.random() * 10));
+
 			scene.add(mesh);
-			meshX+=1;
+			meshArray[i] = mesh;
 		}
 
 
@@ -64,10 +69,23 @@
 		light.position.set(0,0,25);
 		scene.add(light);
 
+
+		// Main update function
 		var render = function()
 		{
 			requestAnimationFrame(render);
 			renderer.render(scene,camera);
+			RotateObjects();
+		}
+
+		function RotateObjects()
+		{
+			for(var i = 0; i < meshArray.length; i++)
+			{
+				meshArray[i].rotation.x += 0.01;
+				meshArray[i].rotation.y += 0.01;
+				meshArray[i].rotation.z += 0.01;
+			}
 		}
 
 		function onMouseMove(event)
