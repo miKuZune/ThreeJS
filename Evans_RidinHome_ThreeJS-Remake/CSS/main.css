@@ -1,0 +1,21 @@
+body
+{
+	margin:0;
+}
+
+canvas 
+{
+	display: block;
+	width:100%;
+	height: 100%;
+}
+
+#playAgainButton
+{
+	width:250px;
+	height:100px;
+
+	position: absolute;
+	left:calc(50% - (250px / 2));
+	top:calc(50% - (100px / 2));
+}
