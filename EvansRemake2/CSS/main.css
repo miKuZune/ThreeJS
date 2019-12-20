@@ -14,3 +14,9 @@ h1
     text-align: center;
     
 }
+
+#gameContainer
+{
+    width:100vw;
+    height: 100vh;
+}
