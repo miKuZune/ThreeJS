@@ -87,7 +87,7 @@ class GameManager
             var touchPos_X = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
             var touchPos_Y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
 
-            if(touchPos_X > (window.innerWidth/2))
+            if(touchPos_X > 0)
             {
                 P_Controller.MoveRight();
             }else
