@@ -2,21 +2,10 @@ class GameManager
 {
     constructor()
     {
-        // Core THREE.js initialization code, setting up the scene camera and renderer.
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-        var renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById("gameContainer").appendChild(renderer.domElement);
-
-        camera.position.z = 5;
-        
-        // Starting the main game loop.
-        this.GameLoop(camera, scene, renderer);
+        this.StartGame();
     }
 
-    GameLoop(camera, scene, renderer)
+    GameLoop(camera, scene, renderer, gameManager)
     {
         // Variables
         var player_speed = 15;
@@ -29,16 +18,18 @@ class GameManager
         document.body.addEventListener("touchstart", OnTouch);
 
         // Game start code
-        //      Player
-        var P_Controller = new PlayerController(scene, player_speed);
 
+        var GM = gameManager;
+        //      Player
+        var P_Controller = new PlayerController(scene, player_speed, this);
+        
         //      Camera
         var CamControl = new CameraController(camera, P_Controller.sprite);
 
         //      Obstacles
         var distanceBetweenObstacles = 25;
 
-        var Ob_Manager = new ObstacleManager(25, scene, P_Controller.sprite);
+        var Ob_Manager = new ObstacleManager(25, scene, P_Controller.sprite, this);
 
         //      Floor
         var floorGeometry = new THREE.BoxGeometry(10,0.1,100);
@@ -49,24 +40,30 @@ class GameManager
         floorMesh.position.x = 0;
         floorMesh.position.y = -4;
         floorMesh.position.z = -50;
-        
 
-        console.log("Floor follower");
-        console.log(floorMesh);
+        this.distanceToTravel = 1.5;
+        var DistMath = new DistanceMaths();
+
         
-        console.log(floorMesh);
 
         // Game loop
         function Loop()
         {
+            if(GM.hasLost){return;}
+            if(GM.hasWon){return;}
             // Repeat this loop.
             requestAnimationFrame( Loop );
             // Re-render the scene.
             renderer.render(scene, camera);
-            
+
             P_Controller.Update();
             CamControl.update();
             Ob_Manager.Update();
+
+            if( P_Controller.distTraveled >= DistMath.ConvertMilesToMetre(GM.distanceToTravel))
+            {
+                GM.WonGame();
+            }
         }
 
         Loop();
@@ -94,10 +91,72 @@ class GameManager
             {
                 P_Controller.MoveLeft();
             }
+        }
 
-            console.log(touchPos_X + " " + touchPos_Y);
+        function Test()
+        {
+            console.log("Testing from within");
         }
     }
+
+    WonGame()
+    {
+        console.log("Game is won!");
+        var gameWonUI = document.createElement("h2");
+        gameWonUI.setAttribute("id", "gameWonText");
+        gameWonUI.innerHTML = "CONGRATULATIONS! YOU'VE WON";
+        document.body.appendChild(gameWonUI);
+        this.hasWon = true;
+    }
+
+    GameOver()
+    {
+        this.hasLost = true;
+
+        // Show gameover button
+        //  Create button object
+        var button = document.createElement("button");
+        button.innerHTML = "Play Again";
+        // Add the button to the html page
+        var body = document.body;
+        body.appendChild(button);
+        // Add the functionality to the button
+        button.addEventListener("click", function(){
+            // Hide button
+            button.parentNode.removeChild(button);
+            
+            NewGame();
+
+        });
+        // Set the ID
+        button.setAttribute("id", "tryAgainButton");
+    }
+
+    StartGame()
+    {
+        // Core THREE.js initialization code, setting up the scene camera and renderer.
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById("gameContainer").appendChild(renderer.domElement);
+
+        camera.position.z = 5;
+
+        this.playersLane = "middle";
+        this.hasLost = false;
+        this.hasWon = false;        
+        // Starting the main game loop.
+
+
+        this.GameLoop(camera, scene, renderer, this);
+        
+    }
+
+    // Getter & setter for player lane to acces it easier.
+    SetPlayerLane(newPlayerLane){this.playersLane = newPlayerLane;}
+    GetPlayerLane(){return this.playersLane;}
 
     ConvertDegreeToRadian(degree)
     {

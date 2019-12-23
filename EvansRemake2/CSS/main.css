@@ -20,3 +20,32 @@ h1
     width:100vw;
     height: 100vh;
 }
+
+button
+{
+    width:300px;
+    height: 90px;
+}
+
+#tryAgainButton
+{
+    position: absolute;
+    top:calc(50% - 45px);
+    left:calc(50% - 150px);
+}
+
+#distTraveled
+{
+    position: absolute;
+    top:25px;
+    width: 100%;
+    text-align: center;
+}
+
+#gameWonText
+{
+    position: absolute;
+    top:50%;
+    width:100%;
+    text-align: center;
+}

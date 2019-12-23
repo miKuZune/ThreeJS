@@ -14,6 +14,7 @@
         <script src="JS/UtilityScripts/TwoD_Animator.js"></script>
         <script src="JS/Obstacle.js"></script>
         <script src="JS/ObstacleManager.js"></script>
+        <script src="JS/UtilityScripts/DistanceMaths.js"></script>
 
 
         <div id="gameContainer">
@@ -22,8 +23,34 @@
         </div>
 
         <script>
-            // Start the gamemanager which will initalize the game and start it's loop.
-            var GM = new GameManager();
+            
+
+            function NewGame()
+            {
+                var gameContainer = document.getElementById("gameContainer");
+
+                while(gameContainer.firstChild)
+                {
+                    gameContainer.removeChild(gameContainer.firstChild);
+                }
+                
+                // Start the gamemanager which will initalize the game and start it's loop.
+                var GM = new GameManager();
+
+                
+            }
+
+            // Create UI
+            var body = document.body;
+
+            var distanceTraveledText = document.createElement("h2");
+            distanceTraveledText.innerHTML = "Distance Traveled: 0";
+
+            body.appendChild(distanceTraveledText);
+
+            distanceTraveledText.setAttribute("id", "distTraveled");
+
+            NewGame();
         </script>
     </body>
 

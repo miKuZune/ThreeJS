@@ -11,12 +11,16 @@ class Obstacle
 
    // parentManager
 
-    constructor(scene,player, obstacleManager)
+    constructor(scene,player, obstacleManager, gameManager)
     {
         this.scene = scene;
         this.player = player;
         this.parentManager = obstacleManager;
+        this.gameManager = gameManager;
         this.imgsrc = "Images/Tree1.png";
+
+        this.lane = "middle";
+
 
         // Initalize in scene game object
         var spriteMap = new THREE.TextureLoader().load( this.imgsrc );
@@ -31,11 +35,46 @@ class Obstacle
         scene.add( this.object );
 
         this.passedPlayer = false;
+
+        this.ChooseLane();
+    }
+
+    ChooseLane()
+    {
+        var value = Math.random() * 3;
+        value = Math.floor(value);
+
+        switch(value)
+        {
+            case 0:
+                this.lane = "left";
+                this.SetX_Position(-2);
+                break;
+            case 1:
+                this.lane = "middle";
+                this.SetX_Position(0);
+                break;
+            case 2:
+                this.lane = "right";
+                this.SetX_Position(2);
+                break;
+            default:
+                this.lane = "middle";
+                this.SetX_Position(0);
+                break;
+        }
+
+        
     }
 
     SetZ_Position(newValue)
     {
         this.object.position.z = -newValue;
+    }
+
+    SetX_Position(newValue)
+    {
+        this.object.position.x = newValue;
     }
 
     Update()
@@ -49,6 +88,12 @@ class Obstacle
         {
             this.passedPlayer = true;
             this.parentManager.PassedObstacle();
+
+            if(this.lane == this.gameManager.GetPlayerLane())
+            {
+                console.log("Crash");
+                this.gameManager.GameOver();
+            }
         }
     }
 

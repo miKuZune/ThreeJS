@@ -11,10 +11,11 @@ class ObstacleManager
 
     //obstaclesToPassToReiterate
 
-    constructor(distanceBetweenObstacles , scene, player )
+    constructor(distanceBetweenObstacles , scene, player, gameManager )
     {
         this.scene = scene;
         this.distanceBetweenObstacles = distanceBetweenObstacles;
+        this.gameManager = gameManager;
 
         var poolNumber = 25;
 
@@ -22,7 +23,7 @@ class ObstacleManager
 
         for(var i = 0; i < poolNumber; i++)
         {
-            this.ObstacleArray[i] = new Obstacle(scene, player, this);
+            this.ObstacleArray[i] = new Obstacle(scene, player, this, this.gameManager);
         }
 
         // set
@@ -44,6 +45,7 @@ class ObstacleManager
             this.recentZ = this.recentZ + this.distanceBetweenObstacles;
             this.ObstacleArray[this.currentID].SetZ_Position(this.recentZ);
             this.ObstacleArray[this.currentID].passedPlayer = false;
+            this.ObstacleArray[this.currentID].ChooseLane();
 
             this.currentID++; 
             if(this.currentID >= this.ObstacleArray.length)

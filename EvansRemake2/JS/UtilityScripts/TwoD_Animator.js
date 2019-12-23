@@ -15,11 +15,6 @@ class TwoD_Animator
         this.spriteMaterialToAnimate = sprite;
         this.framesBetweenImage = framesBetweenImage;
 
-        for(var i = 0; i < this.frameLocations.length; i++)
-        {
-            console.log(this.frameLocations[i]);
-        }
-
         this.currentFrameID = 0;
         this.framecounter = 0;
     }

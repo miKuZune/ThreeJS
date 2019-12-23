@@ -14,9 +14,10 @@ class PlayerController
     //lanesXPos;
     //animator;
 
-    constructor(scene, newSpeed)
+    constructor(scene, newSpeed, gameManager)
     {
         this.speed = newSpeed;
+        this.gameManager = gameManager;
 
         var image = 'Images/Ride_Static.png';
         var spriteMap = new THREE.TextureLoader().load( image );
@@ -36,6 +37,13 @@ class PlayerController
 
         this.lanesXPos = 2;
 
+        this.distanceTraveledUI = document.getElementById("distTraveled");
+        this.distanceTraveled_Prefix = "Distance Travled: ";
+
+        this.distMath = new DistanceMaths();
+
+        this.distTraveled = 0;
+
         var ImageLocations = [
             'Images/Ride_Static.png',
             'Images/Ride_PedalLeft.png',
@@ -49,10 +57,13 @@ class PlayerController
     Update()
     {
         // Move forward
-        this.sprite.position.z -= this.speed / 60;
+        var distToTravel = this.speed / 60;
+        this.sprite.position.z -= distToTravel;
+        this.distTraveled += distToTravel;
 
-        // Move towards target xPos
-        //this.MoveNumTowards(this.sprite.position.x, this.targetPos_X, 2/60);
+        // Update UI
+        var milesTraveled = this.distMath.ConvertMetreToMiles(this.distTraveled);
+        this.distanceTraveledUI.innerHTML = this.distanceTraveled_Prefix + (Math.round(milesTraveled * 100) / 100);
         
         this.sprite.position.x = this.MoveNumTowards(this.sprite.position.x,this.targetPos_X, 20 / 60);
 
@@ -79,10 +90,10 @@ class PlayerController
 
                 if(direction > 0)
                 {
-                    this.currentLane = "right";
+                    this.SetLane("right");
                 }else if(direction < 0)
                 {
-                    this.currentLane = "left";
+                    this.SetLane("left");
                 }
             break;
 
@@ -91,7 +102,7 @@ class PlayerController
                 {
                     this.targetPos_X += direction;
                     //this.sprite.position.x += direction;
-                    this.currentLane = "middle";
+                    this.SetLane("middle");
                 }
             break;
 
@@ -100,10 +111,16 @@ class PlayerController
                 {
                     this.targetPos_X += direction;
                     //this.sprite.position.x += direction;
-                    this.currentLane = "middle";
+                    this.SetLane("middle");
                 }
             break;
         }
+    }
+
+    SetLane(newLane)
+    {
+        this.currentLane = newLane;
+        this.gameManager.SetPlayerLane(newLane);
     }
 
     MoveNumTowards(value, targetValue, speed)
