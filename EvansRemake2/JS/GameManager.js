@@ -26,7 +26,7 @@ class GameManager
 
         // Add input listeners
         document.body.addEventListener("keydown", OnKeyDown);
-        document.body.addEventListener("touchStart", OnTouch);
+        document.body.addEventListener("touchstart", OnTouch);
 
         // Game start code
         //      Player
