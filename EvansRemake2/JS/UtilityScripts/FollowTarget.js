@@ -1,10 +1,10 @@
 class FollowTarget
 {
-    object;
-    targetObject;
-    offset;
+    //object;
+    //targetObject;
+    //offset;
 
-    followSpeed;
+    //followSpeed;
 
     constructor(object, targetObject, offset)
     {

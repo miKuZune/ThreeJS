@@ -1,15 +1,15 @@
 class Obstacle
 {
-    imgsrc
+    //imgsrc
 
-    object
+    //object
 
-    passedPlayer
+    //passedPlayer
 
-    scene
-    player
+    //scene
+    //player
 
-    parentManager
+   // parentManager
 
     constructor(scene,player, obstacleManager)
     {

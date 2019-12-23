@@ -1,10 +1,10 @@
 class CameraController
 {
-    camera;
-    offset;
-    player;
+    //camera;
+    //offset;
+    //player;
 
-    targetFollower;
+    //targetFollower;
 
     constructor(camera, player)
     {

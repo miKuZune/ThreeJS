@@ -1,18 +1,18 @@
 class PlayerController
 {
     // Dynamic variables  
-    currentLane
+    //currentLane;
 
-    sprite
+    //sprite;
 
-    speed
+    //speed;
 
-    targetPos_X
+    //targetPos_X;
 
     // Constant variables
 
-    lanesXPos
-    animator
+    //lanesXPos;
+    //animator;
 
     constructor(scene, newSpeed)
     {

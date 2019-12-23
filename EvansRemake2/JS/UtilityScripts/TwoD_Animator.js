@@ -1,13 +1,13 @@
 class TwoD_Animator
 {
 
-    frameLocations
-    currentFrameID
-    spriteMaterialToAnimate
+    //frameLocations
+    //currentFrameID
+    //spriteMaterialToAnimate
 
-    framesBetweenImage
+    //framesBetweenImage
 
-    framecounter
+    //framecounter
 
     constructor(frameLocations, sprite, framesBetweenImage)
     {

@@ -1,15 +1,15 @@
 class ObstacleManager
 {
-    ObstacleArray
+    //ObstacleArray
 
-    currentID
-    recentZ
+    //currentID
+    //recentZ
 
-    distanceBetweenObstacles
+    //distanceBetweenObstacles
 
-    obstaclesPassed
+    //obstaclesPassed
 
-    obstaclesToPassToReiterate
+    //obstaclesToPassToReiterate
 
     constructor(distanceBetweenObstacles , scene, player )
     {
