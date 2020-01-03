@@ -7,12 +7,14 @@ canvas
 {
     width:100%;
     height:100%;
+
+    background: url(../Images/sunset.png) no-repeat center center;
+    background-size: cover;
 }
 
 h1
 {
     text-align: center;
-    
 }
 
 #gameContainer
@@ -34,12 +36,22 @@ button
     left:calc(50% - 150px);
 }
 
-#distTraveled
+.distText
 {
     position: absolute;
-    top:25px;
-    width: 100%;
+    width:100%;
     text-align: center;
+    color:white;
+}
+
+#distTraveledText
+{
+    top:25px;
+}
+
+#distTraveled
+{
+    top:50px;
 }
 
 #gameWonText
@@ -49,3 +61,25 @@ button
     width:100%;
     text-align: center;
 }
+
+#distanceProgressBar
+{
+    position: absolute;
+    transform: rotate(-90deg);
+    top:50%;
+    right:-275px;
+
+    
+    border-radius: 3px;
+    width:600px;
+    height:5px;
+    
+    
+}
+
+progress::-webkit-progress-bar {
+    background-color: rgb(115,115,115);
+  }
+  progress::-webkit-progress-value {
+    background-color: white;
+  }

@@ -7,11 +7,15 @@ class GameManager
 
     GameLoop(camera, scene, renderer, gameManager)
     {
+        var DistMath = new DistanceMaths();
+
         // Variables
         var player_speed = 15;
+        var speedPerIncrease = 2.5;
+        var maxPlayerSpeed = 50;
 
         // Camera settings
-        scene.background = new THREE.Color( 0xffffff );
+        //scene.background = new THREE.Color( 0xffffff );
 
         // Add input listeners
         document.body.addEventListener("keydown", OnKeyDown);
@@ -29,44 +33,125 @@ class GameManager
         //      Obstacles
         var distanceBetweenObstacles = 25;
 
-        var Ob_Manager = new ObstacleManager(25, scene, P_Controller.sprite, this);
+        this.distanceToTravel = 1.5;
+
+        var maxNumberOfObjs = Math.floor(DistMath.ConvertMilesToMetre(this.distanceToTravel) / distanceBetweenObstacles);
+        var Ob_Manager = new ObstacleManager(25, scene, P_Controller.sprite, this, maxNumberOfObjs);
 
         //      Floor
-        var floorGeometry = new THREE.BoxGeometry(10,0.1,100);
+        var floorGeometry = new THREE.BoxGeometry(10,0.1,1000);
         var floorMat = new THREE.MeshBasicMaterial( {color:0x00ff00} );
         var floorMesh = new THREE.Mesh( floorGeometry, floorMat );
         scene.add(floorMesh);
 
         floorMesh.position.x = 0;
         floorMesh.position.y = -4;
-        floorMesh.position.z = -50;
+        floorMesh.position.z = -500;
 
-        this.distanceToTravel = 1.5;
-        var DistMath = new DistanceMaths();
+        var grassGeometry = new THREE.BoxGeometry(500,0.1,1000);
+        var grassMat = new THREE.MeshBasicMaterial( { color:0x84c0ec } );
+        var grassMesh = new THREE.Mesh( grassGeometry, grassMat );
+        scene.add(grassMesh);
 
-        
+        grassMesh.position.y = floorMesh.position.y - 0.1;
+        grassMesh.position.z = floorMesh.position.z; 
+
+        var metresToTravel = DistMath.ConvertMilesToMetre(GM.distanceToTravel);
+
+        var lostGame_FrameCounter = 0;
+        var playerOnLostAnimator;
+
+
+        var playerStartFrameLocations = 
+        [
+            'Images/Foldout1.png',
+            'Images/Foldout2.png',
+            'Images/Foldout3.png',
+            'Images/Foldout4.png'
+        ];
+        var playerOnStartAnimator = new TwoD_Animator(playerStartFrameLocations, P_Controller.sprite.material, 15);
+        var isStarting = true;
+        var startCounter = 0;
+
+
+        var distanceTraveledUI = document.getElementById("distTraveled");
+
 
         // Game loop
         function Loop()
         {
-            if(GM.hasLost){return;}
-            if(GM.hasWon){return;}
             // Repeat this loop.
             requestAnimationFrame( Loop );
             // Re-render the scene.
             renderer.render(scene, camera);
 
-            P_Controller.Update();
             CamControl.update();
+
+            if(isStarting == true)
+            {
+                GameStartUpdate();
+                return;
+            }
+
+            if(GM.hasLost)
+            {
+                GameLostUpdate();                
+                return;
+            }
+            if(GM.hasWon)
+            {
+                return;
+            }
+            
+
+            P_Controller.Update();
+            
             Ob_Manager.Update();
 
-            if( P_Controller.distTraveled >= DistMath.ConvertMilesToMetre(GM.distanceToTravel))
+            floorMesh.position.z = P_Controller.sprite.position.z;
+            grassMesh.position.z = floorMesh.position.z;
+            
+            if( P_Controller.distTraveled >= metresToTravel)
             {
                 GM.WonGame();
             }
+
+            if(Ob_Manager.obstaclesPassed % 5 == 0 && Ob_Manager.obstaclesPassed > 0)
+            {
+                IncreaseSpeed();
+            }else{speedHasIncreased = false;}
+
+            // Update UI
+            var percentTraveled = (P_Controller.distTraveled / metresToTravel) * 100;
+            DistanceProgressBar.value = percentTraveled;
+
+            DistanceTextUpdate();
         }
 
         Loop();
+
+        function DistanceTextUpdate()
+        {
+            // Update UI
+            var milesTraveled = DistMath.ConvertMilesToMetre(distTraveled);
+
+            distanceTraveledUI.innerHTML = Math.round( (GM.distanceToTravel - DistMath.ConvertMetreToMiles( P_Controller.distTraveled)) * 100) / 100;
+        }
+
+        var speedHasIncreased = false;
+        function IncreaseSpeed()
+        {
+            if(speedHasIncreased == false)
+            {
+                P_Controller.speed += speedPerIncrease;
+                
+                if(P_Controller.speed > maxPlayerSpeed)
+                {
+                    P_Controller.speed = maxPlayerSpeed;
+                }
+                speedHasIncreased = true;
+            }
+        }
 
         function OnKeyDown(e)
         {
@@ -97,6 +182,61 @@ class GameManager
         {
             console.log("Testing from within");
         }
+
+        function GameStartUpdate()
+        {
+            var value = (playerStartFrameLocations.length + 1)  * 15;
+                if(startCounter == value)
+                {
+                    isStarting = false;
+                }
+
+                playerOnStartAnimator.Update();
+
+                startCounter++;
+        }
+
+        function GameLostUpdate()
+        {
+            lostGame_FrameCounter++;
+
+            var locations = [
+                'Images/Crash1.png',
+                'Images/Crash2.png',
+                'Images/Crash3.png'
+            ];
+
+            if(lostGame_FrameCounter == 1)
+            {
+                P_Controller.sprite.position.z += 0.5;
+                
+                playerOnLostAnimator = new TwoD_Animator(locations,P_Controller.sprite.material, 15);
+            }
+            
+            if(lostGame_FrameCounter == locations.length * 15)
+            {
+                var button = document.createElement("button");
+                button.innerHTML = "Play Again";
+                // Add the button to the html page
+                var body = document.body;
+                body.appendChild(button);
+                // Add the functionality to the button
+                button.addEventListener("click", function(){
+                    // Hide button
+                    button.parentNode.removeChild(button);
+                    
+                    NewGame();
+
+                });
+                // Set the ID
+                button.setAttribute("id", "tryAgainButton");
+            }
+
+            if(lostGame_FrameCounter <= locations.length * 15)
+            {
+                playerOnLostAnimator.Update();
+            }
+        }
     }
 
     WonGame()
@@ -115,21 +255,7 @@ class GameManager
 
         // Show gameover button
         //  Create button object
-        var button = document.createElement("button");
-        button.innerHTML = "Play Again";
-        // Add the button to the html page
-        var body = document.body;
-        body.appendChild(button);
-        // Add the functionality to the button
-        button.addEventListener("click", function(){
-            // Hide button
-            button.parentNode.removeChild(button);
-            
-            NewGame();
-
-        });
-        // Set the ID
-        button.setAttribute("id", "tryAgainButton");
+       
     }
 
     StartGame()
@@ -138,7 +264,8 @@ class GameManager
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        var renderer = new THREE.WebGLRenderer();
+        var gameCanvas = document.getElementById("gameCanvas");
+        var renderer = new THREE.WebGLRenderer( { gameCanvas , alpha:true, } );
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById("gameContainer").appendChild(renderer.domElement);
 

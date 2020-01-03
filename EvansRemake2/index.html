@@ -18,7 +18,7 @@
 
 
         <div id="gameContainer">
-
+            <canvas id="gameCanvas"></canvas>
 
         </div>
 
@@ -44,11 +44,28 @@
             var body = document.body;
 
             var distanceTraveledText = document.createElement("h2");
-            distanceTraveledText.innerHTML = "Distance Traveled: 0";
+            distanceTraveledText.innerHTML = "MILES TO HOME";
 
             body.appendChild(distanceTraveledText);
 
-            distanceTraveledText.setAttribute("id", "distTraveled");
+            distanceTraveledText.setAttribute("id", "distTraveledText");
+            distanceTraveledText.setAttribute("class", "distText");
+
+            var distanceOutputText = document.createElement("h2");
+            distanceOutputText.innerHTML = "X.XX";
+            distanceOutputText.setAttribute("id", "distTraveled");
+            distanceOutputText.setAttribute("class", "distText");
+
+            body.appendChild(distanceOutputText);
+
+
+            var DistanceProgressBar = document.createElement("progress");
+            DistanceProgressBar.setAttribute('id', 'distanceProgressBar');
+            DistanceProgressBar.max = 100;
+
+            body.appendChild(DistanceProgressBar);
+
+            
 
             NewGame();
         </script>

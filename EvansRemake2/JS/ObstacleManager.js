@@ -11,11 +11,12 @@ class ObstacleManager
 
     //obstaclesToPassToReiterate
 
-    constructor(distanceBetweenObstacles , scene, player, gameManager )
+    constructor(distanceBetweenObstacles , scene, player, gameManager, maxObjects )
     {
         this.scene = scene;
         this.distanceBetweenObstacles = distanceBetweenObstacles;
         this.gameManager = gameManager;
+        this.maxObjects = maxObjects;
 
         var poolNumber = 25;
 
@@ -32,16 +33,18 @@ class ObstacleManager
         this.obstaclesPassed = -1;
 
         this.obstaclesToPassToReiterate = 10;
+        this.objectsIterated = 0;
 
         this.PositionObjects(poolNumber);
-
-        
     }
 
     PositionObjects(numberOfObjects)
     {
+
         for(var i = 0; i < numberOfObjects; i++)
         {
+            if(this.objectsIterated >= this.maxObjects){return;}
+            
             this.recentZ = this.recentZ + this.distanceBetweenObstacles;
             this.ObstacleArray[this.currentID].SetZ_Position(this.recentZ);
             this.ObstacleArray[this.currentID].passedPlayer = false;
@@ -52,6 +55,8 @@ class ObstacleManager
             {
                 this.currentID = 0;
             }
+
+            this.objectsIterated++;
         }
     }
 

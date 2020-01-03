@@ -91,7 +91,6 @@ class Obstacle
 
             if(this.lane == this.gameManager.GetPlayerLane())
             {
-                console.log("Crash");
                 this.gameManager.GameOver();
             }
         }

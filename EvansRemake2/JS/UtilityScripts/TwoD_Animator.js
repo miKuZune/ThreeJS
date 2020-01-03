@@ -9,19 +9,19 @@ class TwoD_Animator
 
     //framecounter
 
-    constructor(frameLocations, sprite, framesBetweenImage)
+    constructor(frameLocations, sprite, framesBetweenImage )
     {
         this.frameLocations = frameLocations;
         this.spriteMaterialToAnimate = sprite;
         this.framesBetweenImage = framesBetweenImage;
 
         this.currentFrameID = 0;
-        this.framecounter = 0;
+        this.framecounter = 0; 
     }
 
     NextFrame()
     {
-        this.currentFrameID++;
+        
         if(this.currentFrameID >= this.frameLocations.length)
         {
             this.currentFrameID = 0;
@@ -29,6 +29,7 @@ class TwoD_Animator
 
         var spriteMap = new THREE.TextureLoader().load( this.frameLocations[this.currentFrameID] );
         this.spriteMaterialToAnimate.map = spriteMap;
+        this.currentFrameID++;
     }
 
     Update()

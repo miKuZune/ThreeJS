@@ -24,7 +24,9 @@ class PlayerController
         var spriteMaterial = new THREE.SpriteMaterial( {map: spriteMap, color: 0xffffff} );
 
         this.sprite = new THREE.Sprite( spriteMaterial );
-        this.sprite.scale.y = 1.689;
+        this.sprite.scale.x = 1.5;
+        this.sprite.scale.y = 1.168 * this.sprite.scale.x;
+        
         scene.add ( this.sprite );
 
         this.sprite.position.y = -2;
@@ -36,9 +38,6 @@ class PlayerController
         // Set Constant variables
 
         this.lanesXPos = 2;
-
-        this.distanceTraveledUI = document.getElementById("distTraveled");
-        this.distanceTraveled_Prefix = "Distance Travled: ";
 
         this.distMath = new DistanceMaths();
 
@@ -60,10 +59,6 @@ class PlayerController
         var distToTravel = this.speed / 60;
         this.sprite.position.z -= distToTravel;
         this.distTraveled += distToTravel;
-
-        // Update UI
-        var milesTraveled = this.distMath.ConvertMetreToMiles(this.distTraveled);
-        this.distanceTraveledUI.innerHTML = this.distanceTraveled_Prefix + (Math.round(milesTraveled * 100) / 100);
         
         this.sprite.position.x = this.MoveNumTowards(this.sprite.position.x,this.targetPos_X, 20 / 60);
 
