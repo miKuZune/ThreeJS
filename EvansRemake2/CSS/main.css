@@ -1,6 +1,19 @@
+@font-face
+{
+    font-family: Arcade;
+    src: url(../Fonts/ARCADE_N.TTF);
+}
+
+@font-face
+{
+    font-family: PixelSplitter;
+    src: url(../Fonts/PixelSplitter-Bold.ttf);
+}
+
 body
 {
     margin:0;
+    font-family: Arcade;
 }
 
 canvas
@@ -25,15 +38,31 @@ h1
 
 button
 {
-    width:300px;
-    height: 90px;
+    width:266px;
+    height: 57px;
+
+    background-color:#f4a343;
+
+    font-size: 20px;
+    padding:0;
+
+    font-family: Arcade;
+
+    border:none;
 }
 
 #tryAgainButton
 {
     position: absolute;
-    top:calc(50% - 45px);
-    left:calc(50% - 150px);
+    bottom:105px;
+    left:calc(50% - 133px);
+}
+
+#shareButton
+{
+    position: absolute;
+    bottom:25px;
+    left:calc(50% - 133px);
 }
 
 .distText
@@ -51,7 +80,7 @@ button
 
 #distTraveled
 {
-    top:50px;
+    top:75px;
 }
 
 #gameWonText
@@ -60,6 +89,88 @@ button
     top:50%;
     width:100%;
     text-align: center;
+}
+
+
+
+.fullscreenUI_Container
+{
+    position: absolute;
+    width:100vw;
+    height:100vh;
+    top:0;
+    left:0;
+}
+
+.UI_Background
+{
+    width:100%;
+    height:100%;
+}
+
+.logo
+{
+    width:150px;
+    height:63px;
+}
+
+.lostLogo
+{
+    position: absolute;
+    top:25px;
+    left:calc(50% - 75px);
+}
+
+.gameOverImg
+{
+    width: 330px;
+    height: 186px;
+
+    position: absolute;
+    top:175px;
+    left:calc(50% - 165px);
+}
+
+.lostScreenText
+{
+    margin: 5px auto;
+
+    font-size: 22px;
+
+    width:40vw;
+    left:30vw;
+
+    text-align: center;
+    color:white;
+}
+
+.lost_T1
+{
+}
+
+.lost_T2
+{
+    font-size: 42px;
+    font-family: PixelSplitter;
+}
+
+.lost_T3
+{
+}
+
+.lost_T4
+{
+    width:20%;
+    min-width: 450px;
+
+    margin-top: 25px;
+}
+
+.lostscreen_textcontainer
+{
+    position: absolute;
+    bottom:22%;
+    width:100%;
 }
 
 #distanceProgressBar
@@ -73,8 +184,121 @@ button
     border-radius: 3px;
     width:600px;
     height:5px;
+}
+
+.distanceCheckpointBar
+{
+    width:20px;
+    height:2px;
+    background: grey;
+
+    position: absolute;
+    right:30px;
+}
+/* Top */
+#distanceCheckpointBar1
+{
+    top:calc(50% - (600px / 2));
+}
+/* Top Quater */
+#distanceCheckpointBar2
+{
+    top:calc(50% - (600px / 4));
+}
+/* Middle */
+#distanceCheckpointBar3
+{
+    top:50%;
+}
+/* Bottom Quater */
+#distanceCheckpointBar4
+{
+    top:calc(50% + (600px / 4));
+}
+
+/* Bottom */
+#distanceCheckpointBar5
+{
+    top:calc(50% + (600px / 2));
+}
+
+#progressText
+{
+    position: absolute;
+    width:100%;
+    text-align: center;
+    color:white;
+    top:50%;
+}
+
+#wonUIContainer
+{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100vw;
+    height: 100vh;
+}
+
+#congratizImg
+{
+    position: absolute;
+
+    width:80vw;
+    left:calc(50% - (80vw/2));
+    top:50px;
+
+}
+
+.wonScreenText
+{
+    position: absolute;
+
+    width:100%;
+    text-align: center;
+    color:white;
+}
+
+#wonScreenText1
+{
+    top:250px;
+}
+
+#wonScreenText2
+{
+    top:300px;
+}
+
+.evansStoreButton
+{
+    position: absolute;
+
+    bottom:185px;
+    left: calc(50% - 133px);
+}
+
+.wonScreen_PlayAgainButton
+{
+    position: absolute;
+    bottom:105px;
+    left: calc(50% - 133px);
+}
+
+.wonScreen_ShareButton
+{
+    position: absolute;
+    bottom:25px;
+    left: calc(50% - 133px);
+}
+
+#countdownImage
+{
+    position: absolute;
+    top:calc(50% - 125px);
+    left:calc(50% - 125px);
     
-    
+    width:250px;
+    height:250px;
 }
 
 progress::-webkit-progress-bar {

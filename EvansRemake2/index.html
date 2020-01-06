@@ -15,7 +15,9 @@
         <script src="JS/Obstacle.js"></script>
         <script src="JS/ObstacleManager.js"></script>
         <script src="JS/UtilityScripts/DistanceMaths.js"></script>
-
+        <script src="JS/UI_Managers/LostscreenUI.js"></script>
+        <script src="JS/UI_Managers/ProgressUIManager.js"></script>
+        <script src="JS/UI_Managers/WonscreenUI.js"></script>
 
         <div id="gameContainer">
             <canvas id="gameCanvas"></canvas>
@@ -23,8 +25,6 @@
         </div>
 
         <script>
-            
-
             function NewGame()
             {
                 var gameContainer = document.getElementById("gameContainer");
@@ -33,40 +33,29 @@
                 {
                     gameContainer.removeChild(gameContainer.firstChild);
                 }
-                
+
+                // Create UI
+                var body = document.body;
+
+                var distanceTraveledText = document.createElement("h2");
+                distanceTraveledText.innerHTML = "MILES TO HOME";
+
+                body.appendChild(distanceTraveledText);
+
+                distanceTraveledText.setAttribute("id", "distTraveledText");
+                distanceTraveledText.setAttribute("class", "distText");
+
+                var distanceOutputText = document.createElement("h2");
+                distanceOutputText.innerHTML = "0.00";
+                distanceOutputText.setAttribute("id", "distTraveled");
+                distanceOutputText.setAttribute("class", "distText");
+
+                body.appendChild(distanceOutputText);
+
+
                 // Start the gamemanager which will initalize the game and start it's loop.
                 var GM = new GameManager();
-
-                
             }
-
-            // Create UI
-            var body = document.body;
-
-            var distanceTraveledText = document.createElement("h2");
-            distanceTraveledText.innerHTML = "MILES TO HOME";
-
-            body.appendChild(distanceTraveledText);
-
-            distanceTraveledText.setAttribute("id", "distTraveledText");
-            distanceTraveledText.setAttribute("class", "distText");
-
-            var distanceOutputText = document.createElement("h2");
-            distanceOutputText.innerHTML = "X.XX";
-            distanceOutputText.setAttribute("id", "distTraveled");
-            distanceOutputText.setAttribute("class", "distText");
-
-            body.appendChild(distanceOutputText);
-
-
-            var DistanceProgressBar = document.createElement("progress");
-            DistanceProgressBar.setAttribute('id', 'distanceProgressBar');
-            DistanceProgressBar.max = 100;
-
-            body.appendChild(DistanceProgressBar);
-
-            
-
             NewGame();
         </script>
     </body>

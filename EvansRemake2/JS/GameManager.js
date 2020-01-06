@@ -33,14 +33,14 @@ class GameManager
         //      Obstacles
         var distanceBetweenObstacles = 25;
 
-        this.distanceToTravel = 1.5;
+        this.distanceToTravel = 0.5;
 
         var maxNumberOfObjs = Math.floor(DistMath.ConvertMilesToMetre(this.distanceToTravel) / distanceBetweenObstacles);
         var Ob_Manager = new ObstacleManager(25, scene, P_Controller.sprite, this, maxNumberOfObjs);
 
         //      Floor
         var floorGeometry = new THREE.BoxGeometry(10,0.1,1000);
-        var floorMat = new THREE.MeshBasicMaterial( {color:0x00ff00} );
+        var floorMat = new THREE.MeshBasicMaterial( {color:0x44ac73} );
         var floorMesh = new THREE.Mesh( floorGeometry, floorMat );
         scene.add(floorMesh);
 
@@ -61,13 +61,14 @@ class GameManager
         var lostGame_FrameCounter = 0;
         var playerOnLostAnimator;
 
-
         var playerStartFrameLocations = 
         [
             'Images/Foldout1.png',
             'Images/Foldout2.png',
             'Images/Foldout3.png',
-            'Images/Foldout4.png'
+            'Images/Foldout4.png',
+            'Images/TurnRight.png',
+            'Images/Ride_Static.png'
         ];
         var playerOnStartAnimator = new TwoD_Animator(playerStartFrameLocations, P_Controller.sprite.material, 15);
         var isStarting = true;
@@ -75,7 +76,7 @@ class GameManager
 
 
         var distanceTraveledUI = document.getElementById("distTraveled");
-
+        var progressUI_Manager = new ProgressUIManager();
 
         // Game loop
         function Loop()
@@ -101,8 +102,7 @@ class GameManager
             if(GM.hasWon)
             {
                 return;
-            }
-            
+            }            
 
             P_Controller.Update();
             
@@ -123,9 +123,14 @@ class GameManager
 
             // Update UI
             var percentTraveled = (P_Controller.distTraveled / metresToTravel) * 100;
-            DistanceProgressBar.value = percentTraveled;
+            //DistanceProgressBar.value = percentTraveled;
 
             DistanceTextUpdate();
+
+
+            var checkpointsPassed = Math.floor(percentTraveled / 25);
+            progressUI_Manager.Update(checkpointsPassed, percentTraveled);
+
         }
 
         Loop();
@@ -133,9 +138,9 @@ class GameManager
         function DistanceTextUpdate()
         {
             // Update UI
-            var milesTraveled = DistMath.ConvertMilesToMetre(distTraveled);
+            var milesTraveled = DistMath.ConvertMilesToMetre(P_Controller.distTraveled);
 
-            distanceTraveledUI.innerHTML = Math.round( (GM.distanceToTravel - DistMath.ConvertMetreToMiles( P_Controller.distTraveled)) * 100) / 100;
+            distanceTraveledUI.innerHTML = (Math.round( (GM.distanceToTravel - DistMath.ConvertMetreToMiles( P_Controller.distTraveled)) * 100) / 100).toFixed(2);
         }
 
         var speedHasIncreased = false;
@@ -183,17 +188,44 @@ class GameManager
             console.log("Testing from within");
         }
 
+
+        var countdownImages = [
+            'Images/countdown_3.png',
+            'Images/countdown_2.png',
+            'Images/countdown_1.png'
+        ];
+
+        var countdownImage = document.createElement("img");
+        countdownImage.setAttribute("id", "countdownImage");
+
+        
         function GameStartUpdate()
         {
-            var value = (playerStartFrameLocations.length + 1)  * 15;
-                if(startCounter == value)
-                {
-                    isStarting = false;
-                }
+            var value = (playerStartFrameLocations.length)  * 15;
+            if(startCounter >= value + (60 * 3))
+            {
+                countdownImage.parentNode.removeChild(countdownImage);
+                isStarting = false;
+            }
 
+            // Start the countdown
+            if(startCounter > value && startCounter < value + (60 * 3))
+            {
+                var framesSinceCountdownBegan = startCounter - value;
+                var currCountdownImgID = framesSinceCountdownBegan / 60;
+                currCountdownImgID = Math.floor(currCountdownImgID);
+                countdownImage.setAttribute("src", countdownImages[currCountdownImgID]);
+            }
+
+            if(startCounter < value)
+            {
                 playerOnStartAnimator.Update();
-
-                startCounter++;
+            }else if(startCounter == value)
+            {
+                document.body.appendChild(countdownImage);
+                countdownImage.setAttribute("src", countdownImages[0]);
+            }
+            startCounter++;
         }
 
         function GameLostUpdate()
@@ -206,6 +238,7 @@ class GameManager
                 'Images/Crash3.png'
             ];
 
+            // Start
             if(lostGame_FrameCounter == 1)
             {
                 P_Controller.sprite.position.z += 0.5;
@@ -213,39 +246,52 @@ class GameManager
                 playerOnLostAnimator = new TwoD_Animator(locations,P_Controller.sprite.material, 15);
             }
             
+            // End (Shows UI)
             if(lostGame_FrameCounter == locations.length * 15)
             {
-                var button = document.createElement("button");
-                button.innerHTML = "Play Again";
-                // Add the button to the html page
-                var body = document.body;
-                body.appendChild(button);
-                // Add the functionality to the button
-                button.addEventListener("click", function(){
-                    // Hide button
-                    button.parentNode.removeChild(button);
-                    
-                    NewGame();
-
-                });
-                // Set the ID
-                button.setAttribute("id", "tryAgainButton");
+                var lostScreenUI_Manager = new LostscreenUI((Math.round( (GM.distanceToTravel - DistMath.ConvertMetreToMiles( P_Controller.distTraveled)) * 100) / 100).toFixed(2));
             }
 
+            // Update
             if(lostGame_FrameCounter <= locations.length * 15)
             {
                 playerOnLostAnimator.Update();
             }
+        }
+
+        // Resize window & aspect ratio
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize()
+        {
+            camera.aspect = window.innerWidth/window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
         }
     }
 
     WonGame()
     {
         console.log("Game is won!");
-        var gameWonUI = document.createElement("h2");
-        gameWonUI.setAttribute("id", "gameWonText");
-        gameWonUI.innerHTML = "CONGRATULATIONS! YOU'VE WON";
-        document.body.appendChild(gameWonUI);
+
+        // Destroy UI that is no longer neccessary
+        var headerText = document.getElementById("distTraveledText");
+        var distanceText = document.getElementById("distTraveled");
+
+        headerText.parentNode.removeChild(headerText);
+        distanceText.parentNode.removeChild(distanceText);
+
+        for(var i = 0; i < 5; i++)
+        {
+            var toDelete = document.getElementById("distanceCheckpointBar" + (i + 1));
+            toDelete.parentNode.removeChild(toDelete);
+        }
+
+        var progressBar = document.getElementById("distanceProgressBar");
+        progressBar.parentNode.removeChild(progressBar);
+
+        // Show won UI
+        var WonUI = new WonscreenUI();
         this.hasWon = true;
     }
 
@@ -253,8 +299,20 @@ class GameManager
     {
         this.hasLost = true;
 
-        // Show gameover button
-        //  Create button object
+        var headerText = document.getElementById("distTraveledText");
+        var distanceText = document.getElementById("distTraveled");
+
+        headerText.parentNode.removeChild(headerText);
+        distanceText.parentNode.removeChild(distanceText);
+
+        for(var i = 0; i < 5; i++)
+        {
+            var toDelete = document.getElementById("distanceCheckpointBar" + (i + 1));
+            toDelete.parentNode.removeChild(toDelete);
+        }
+
+        var progressBar = document.getElementById("distanceProgressBar");
+        progressBar.parentNode.removeChild(progressBar);
        
     }
 
