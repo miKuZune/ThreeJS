@@ -17,15 +17,13 @@ class Obstacle
         this.player = player;
         this.parentManager = obstacleManager;
         this.gameManager = gameManager;
-        this.imgsrc = "Images/Tree1.png";
 
         this.lane = "middle";
 
 
         // Initalize in scene game object
-        var spriteMap = new THREE.TextureLoader().load( this.imgsrc );
-        var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
-        this.object = new THREE.Sprite( spriteMaterial );
+        this.object = new THREE.Sprite( null );
+        this.ChooseNewImage();
 
         this.object.position.y = -2;
 
@@ -65,6 +63,23 @@ class Obstacle
         }
 
         
+    }
+
+    ChooseNewImage()
+    {
+        var possibleImgSrcs = [
+            'Images/Tree1.png',
+            'Images/Tree2.png',
+            'Images/Trunk.png'
+        ];
+
+        var imgSrcID = Math.floor( Math.random() * 3 );
+
+        this.imgsrc = possibleImgSrcs[imgSrcID];
+
+        var spriteMap = new THREE.TextureLoader().load( this.imgsrc );
+        var spriteMaterial = new THREE.SpriteMaterial( { map: spriteMap, color: 0xffffff } );
+        this.object.material = spriteMaterial;
     }
 
     SetZ_Position(newValue)

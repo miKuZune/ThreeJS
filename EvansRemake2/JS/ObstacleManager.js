@@ -36,6 +36,8 @@ class ObstacleManager
         this.objectsIterated = 0;
 
         this.PositionObjects(poolNumber);
+
+        this.goalManager = new GoalManager();
     }
 
     PositionObjects(numberOfObjects)
@@ -43,12 +45,17 @@ class ObstacleManager
 
         for(var i = 0; i < numberOfObjects; i++)
         {
-            if(this.objectsIterated >= this.maxObjects){return;}
+            if(this.objectsIterated >= this.maxObjects)
+            {
+                this.goalManager.CreateGoal( this.recentZ + (this.distanceBetweenObstacles * 2) ,this.scene)
+                return;
+            }
             
             this.recentZ = this.recentZ + this.distanceBetweenObstacles;
             this.ObstacleArray[this.currentID].SetZ_Position(this.recentZ);
             this.ObstacleArray[this.currentID].passedPlayer = false;
             this.ObstacleArray[this.currentID].ChooseLane();
+            this.ObstacleArray[this.currentID].ChooseNewImage();
 
             this.currentID++; 
             if(this.currentID >= this.ObstacleArray.length)
@@ -71,6 +78,7 @@ class ObstacleManager
     Update()
     {
         this.UpdateObstacles();
+        this.goalManager.Update();
     }
 
     PassedObstacle()
@@ -80,6 +88,11 @@ class ObstacleManager
         if(this.obstaclesPassed % this.obstaclesToPassToReiterate == 0 && this.obstaclesPassed > 0)
         {
             this.PositionObjects(this.obstaclesToPassToReiterate);
+        }
+
+        if(this.obstaclesPassed >= this.maxObjects - 10)
+        {
+            this.goalManager.animateHouse = true;
         }
     }
 

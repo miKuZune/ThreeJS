@@ -101,6 +101,7 @@ class GameManager
             }
             if(GM.hasWon)
             {
+                Ob_Manager.goalManager.Update();
                 return;
             }            
 
@@ -126,7 +127,6 @@ class GameManager
             //DistanceProgressBar.value = percentTraveled;
 
             DistanceTextUpdate();
-
 
             var checkpointsPassed = Math.floor(percentTraveled / 25);
             progressUI_Manager.Update(checkpointsPassed, percentTraveled);

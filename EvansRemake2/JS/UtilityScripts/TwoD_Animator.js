@@ -9,10 +9,10 @@ class TwoD_Animator
 
     //framecounter
 
-    constructor(frameLocations, sprite, framesBetweenImage )
+    constructor(frameLocations, spriteObject, framesBetweenImage )
     {
         this.frameLocations = frameLocations;
-        this.spriteMaterialToAnimate = sprite;
+        this.spriteMaterialToAnimate = spriteObject;
         this.framesBetweenImage = framesBetweenImage;
 
         this.currentFrameID = 0;
