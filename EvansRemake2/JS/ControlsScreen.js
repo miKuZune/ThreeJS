@@ -13,7 +13,7 @@ class ControlsScreen
         // Background
         var background = document.createElement('img');
         background.setAttribute('id', 'startScreen_BackgroundImage');
-        background.setAttribute('src', 'Images/HomeScreenBackground.png');
+        background.setAttribute('src', 'Images/HomescreenBackground.png');
 
         controlsContainer.appendChild(background);
 

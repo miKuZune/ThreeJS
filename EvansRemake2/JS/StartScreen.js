@@ -19,7 +19,7 @@ class StartScreen
         // Background Image
         var backgroundImage = document.createElement('img');
         backgroundImage.setAttribute('id', 'startScreen_BackgroundImage');
-        backgroundImage.setAttribute('src', 'Images/HomeScreenBackground.png');
+        backgroundImage.setAttribute('src', 'Images/HomescreenBackground.png');
 
         startScreenContainer.appendChild(backgroundImage);
         // Logo
