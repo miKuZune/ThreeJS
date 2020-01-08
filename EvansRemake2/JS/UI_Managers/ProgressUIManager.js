@@ -4,6 +4,15 @@ class ProgressUIManager
     {
         var body = document.body;
 
+        this.endOfGameDarknessTarget = 0.6;
+
+        // Add the "time" darkness overlay
+        this.darknessOverlay = document.createElement("div");
+        this.darknessOverlay.setAttribute('id', 'darknessOverlay');
+        this.darknessOverlay.setAttribute('style', 'background:rgba(0,0,0,0.0)');
+
+        body.appendChild(this.darknessOverlay);
+
         // Add the progress bar
         this.DistanceProgressBar = document.createElement("progress");
         this.DistanceProgressBar.setAttribute('id', 'distanceProgressBar');
@@ -59,6 +68,10 @@ class ProgressUIManager
                 }
             }
         }
+
+        // Update the darkness overlay
+        var darknessValue = this.endOfGameDarknessTarget * (percentTraveled / 100);
+        this.darknessOverlay.setAttribute('style', 'background:rgba(0,0,0,' + darknessValue + ')');
         // Update the progress bar itself
         this.DistanceProgressBar.value = percentTraveled;
 
@@ -80,6 +93,7 @@ class ProgressUIManager
     Reset()
     {
         this.DistanceProgressBar.value = 0;
+        //this.darknessOverlay.setAttribute('style', 'background:rgba(0,0,0,0.0)');
 
         for(var i = 0; i < this.progressBarItems.length; i++)
         {

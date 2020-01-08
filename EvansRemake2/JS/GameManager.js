@@ -22,7 +22,6 @@ class GameManager
         document.body.addEventListener("touchstart", OnTouch);
 
         // Game start code
-
         var GM = gameManager;
         //      Player
         var P_Controller = new PlayerController(scene, player_speed, this);
@@ -56,6 +55,45 @@ class GameManager
         grassMesh.position.y = floorMesh.position.y - 0.1;
         grassMesh.position.z = floorMesh.position.z; 
 
+        // Sun
+        var sunMap = new THREE.TextureLoader().load( "Images/Sun.png" );
+        var sunMaterial = new THREE.SpriteMaterial( { map:sunMap, color: 0xffffff } );
+        var sunSprite = new THREE.Sprite( sunMaterial );
+
+        var sunSprite_StartPos_Y = 50;
+        var sunSprite_EndPos_Y = -75;
+        var sunDistToTravel = sunSprite_StartPos_Y - sunSprite_EndPos_Y;
+
+        sunSprite.position.z = -250;
+        sunSprite.position.y = 50;
+
+        sunSprite.scale.x = 500;
+        sunSprite.scale.y = sunSprite.scale.x;
+
+        scene.add(sunSprite);
+
+        // Particle effects
+        var particleImgSrcs = [
+            'Images/Snowflake1.png',
+            'Images/Snowflake2.png'
+        ];
+        var particles = new ParticleManager_TwoD(scene, 100, particleImgSrcs);
+
+        // Background elements (appear infront of the sun but don't move so arn't included in the sun)
+        var backgroundMap = new THREE.TextureLoader().load("Images/Background.png");
+        var backgroundMat = new THREE.SpriteMaterial( { map:backgroundMap, color: 0xffffff } );
+        var backgroundSprite = new THREE.Sprite( backgroundMat );
+
+        backgroundSprite.position.z = sunSprite.position.z + 0.01;
+        backgroundSprite.position.y = 0;
+
+        backgroundSprite.scale.x = 1000;
+        backgroundSprite.scale.y = backgroundSprite.scale.x * 0.695;
+
+
+        scene.add( backgroundSprite );
+
+
         var metresToTravel = DistMath.ConvertMilesToMetre(GM.distanceToTravel);
 
         var lostGame_FrameCounter = 0;
@@ -88,6 +126,9 @@ class GameManager
 
             CamControl.update();
 
+            // Update particles
+            particles.Update(P_Controller.sprite.position.z);
+
             if(isStarting == true)
             {
                 GameStartUpdate();
@@ -109,8 +150,12 @@ class GameManager
             
             Ob_Manager.Update();
 
+            // Handle moving the floor objects
             floorMesh.position.z = P_Controller.sprite.position.z;
             grassMesh.position.z = floorMesh.position.z;
+            // Handle moving the SUN & the background elements with the player
+            sunSprite.position.z = P_Controller.sprite.position.z - 250;
+            backgroundSprite.position.z = sunSprite.position.z + 0.01;
             
             if( P_Controller.distTraveled >= metresToTravel)
             {
@@ -122,15 +167,19 @@ class GameManager
                 IncreaseSpeed();
             }else{speedHasIncreased = false;}
 
+
+            
             // Update UI
             var percentTraveled = (P_Controller.distTraveled / metresToTravel) * 100;
-            //DistanceProgressBar.value = percentTraveled;
+
+            // Move the sun to indicate "time"
+            var newSunYPos = sunSprite_StartPos_Y - (sunDistToTravel * (percentTraveled / 100));
+            sunSprite.position.y = newSunYPos;
 
             DistanceTextUpdate();
 
             var checkpointsPassed = Math.floor(percentTraveled / 25);
             progressUI_Manager.Update(checkpointsPassed, percentTraveled);
-
         }
 
         Loop();
@@ -182,12 +231,6 @@ class GameManager
                 P_Controller.MoveLeft();
             }
         }
-
-        function Test()
-        {
-            console.log("Testing from within");
-        }
-
 
         var countdownImages = [
             'Images/countdown_3.png',
@@ -270,25 +313,34 @@ class GameManager
         }
     }
 
-    WonGame()
+    RemoveUI()
     {
-        console.log("Game is won!");
-
         // Destroy UI that is no longer neccessary
         var headerText = document.getElementById("distTraveledText");
         var distanceText = document.getElementById("distTraveled");
 
-        headerText.parentNode.removeChild(headerText);
-        distanceText.parentNode.removeChild(distanceText);
-
+        if(headerText != undefined)
+        {headerText.parentNode.removeChild(headerText);}
+        if(distanceText != undefined)
+        {distanceText.parentNode.removeChild(distanceText);}
+        
         for(var i = 0; i < 5; i++)
         {
             var toDelete = document.getElementById("distanceCheckpointBar" + (i + 1));
-            toDelete.parentNode.removeChild(toDelete);
+            if(toDelete != undefined)
+            {toDelete.parentNode.removeChild(toDelete);}
         }
 
         var progressBar = document.getElementById("distanceProgressBar");
-        progressBar.parentNode.removeChild(progressBar);
+        if(progressBar != undefined)
+        {progressBar.parentNode.removeChild(progressBar);}
+    }
+
+    WonGame()
+    {
+        console.log("Game is won!");
+
+        this.RemoveUI();
 
         // Show won UI
         var WonUI = new WonscreenUI();
@@ -299,21 +351,7 @@ class GameManager
     {
         this.hasLost = true;
 
-        var headerText = document.getElementById("distTraveledText");
-        var distanceText = document.getElementById("distTraveled");
-
-        headerText.parentNode.removeChild(headerText);
-        distanceText.parentNode.removeChild(distanceText);
-
-        for(var i = 0; i < 5; i++)
-        {
-            var toDelete = document.getElementById("distanceCheckpointBar" + (i + 1));
-            toDelete.parentNode.removeChild(toDelete);
-        }
-
-        var progressBar = document.getElementById("distanceProgressBar");
-        progressBar.parentNode.removeChild(progressBar);
-       
+        this.RemoveUI();
     }
 
     StartGame()
@@ -325,6 +363,8 @@ class GameManager
         var gameCanvas = document.getElementById("gameCanvas");
         var renderer = new THREE.WebGLRenderer( { gameCanvas , alpha:true, } );
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor( 0x003041 );
+
         document.getElementById("gameContainer").appendChild(renderer.domElement);
 
         camera.position.z = 5;

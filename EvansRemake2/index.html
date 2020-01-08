@@ -19,6 +19,9 @@
         <script src="JS/UI_Managers/ProgressUIManager.js"></script>
         <script src="JS/UI_Managers/WonscreenUI.js"></script>
         <script src="JS/GoalManager.js"></script>
+        <script src="JS/SideSigns.js"></script>
+        <script src="JS/ParticleManager_TwoD.js"></script>
+        <script src="JS/Particle.js"></script>
 
         <div id="gameContainer">
             <canvas id="gameCanvas"></canvas>
@@ -52,6 +55,10 @@
                 distanceOutputText.setAttribute("class", "distText");
 
                 body.appendChild(distanceOutputText);
+
+                var darknessOverlay = document.getElementById("darknessOverlay");
+                if(darknessOverlay != undefined)
+                {darknessOverlay.parentNode.removeChild(darknessOverlay);}
 
 
                 // Start the gamemanager which will initalize the game and start it's loop.

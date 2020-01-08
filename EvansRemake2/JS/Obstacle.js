@@ -20,7 +20,6 @@ class Obstacle
 
         this.lane = "middle";
 
-
         // Initalize in scene game object
         this.object = new THREE.Sprite( null );
         this.ChooseNewImage();
@@ -61,8 +60,6 @@ class Obstacle
                 this.SetX_Position(0);
                 break;
         }
-
-        
     }
 
     ChooseNewImage()
@@ -110,6 +107,4 @@ class Obstacle
             }
         }
     }
-
-
 }
