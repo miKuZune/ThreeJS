@@ -47,7 +47,7 @@ class WonscreenUI
 
         playAgainButton.addEventListener("click", function(){
             container.parentNode.removeChild(container);
-            NewGame();
+            var newGame = new NewGame();
         });
 
         container.appendChild(playAgainButton);

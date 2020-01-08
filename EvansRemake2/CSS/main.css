@@ -310,6 +310,167 @@ button
     top:0;
 }
 
+#startScreen_BackgroundImage
+{
+    position: absolute;
+
+    top:0;
+    left:0;
+
+    width:100vw;
+    height: 100vh;
+
+    z-index: -1;
+}
+
+#startScreen_Logo
+{
+
+}
+
+#startScreen_hero
+{
+    width: 800px;
+    position: absolute;
+    top: 25px;
+    left: calc(50% - 400px);
+}
+
+#startScreen_textContainer
+{
+    position: absolute;
+    width: 100%;
+    bottom: 200px;
+}
+
+.startScreen_text
+{
+    text-align: center;
+    color:white;
+    margin:20px 30%;
+}
+
+#startScreen_text1
+{
+    font-size: 24px;
+}
+
+#startScreen_text2
+{
+    margin:20px 35%;
+}
+
+#startScreen_nextButton
+{
+    position: absolute;
+    left:calc(50% - 150px);
+    bottom: 50px;
+}
+
+#startScreen_soundButton
+{
+    border-radius: 50px;
+    width:57px;
+
+    position: absolute;
+    bottom:50px;
+    left:calc(50% - 57px/2 + 150px + 25px);
+}
+
+#startScreen_soundButton_Image
+{
+    width:75%;
+    height:75%;
+    margin:12.5%;
+}
+
+#startScreenContainer
+{
+    position: absolute;
+    top:0;
+    left:0;
+
+    width:100vw;
+    height:100vh;
+}
+
+#controls_container
+{
+    height:100vh;
+    width:100vw;
+}
+
+#controls_logo
+{
+    position: absolute;
+    top: 25px;
+    left: calc(50% - 150px);
+}
+
+#controls_hero
+{
+    position: absolute;
+    top: 180px;
+    width: 75%;
+    left: calc(50% - (75% / 2));
+}
+
+#controls_textContainer
+{
+    position: absolute;
+    width: 100%;
+    bottom: 300px;
+}
+
+.controls_text
+{
+    text-align: center;
+    color:white;
+}
+
+#controls_text1
+{
+
+}
+
+#controls_text2
+{
+
+}
+#controls_text3
+{
+
+}
+#controls_text4
+{
+
+}
+
+
+#controls_nextButton
+{
+    position: absolute;
+    bottom: 50px;
+    left: calc(50% - 150px);
+}
+
+#controls_previousButton
+{
+    position: absolute;
+    bottom: 50px;
+    left: calc(50% - 133px - 100px);
+    width: 57px;
+    border-radius: 50px;
+}
+
+#controls_previousButton img
+{
+    width:75%;
+    height:75%;
+    margin:12.5%;
+}
+
+
 progress::-webkit-progress-bar {
     background-color: rgb(115,115,115);
   }

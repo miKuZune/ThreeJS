@@ -77,7 +77,7 @@ class LostscreenUI
             //distanceTraveledUI.innerHTML = "0.00";
             //DistanceProgressBar.value = 0;
             
-            NewGame();
+            var newGame = new NewGame();
 
         });
         // Set the ID
