@@ -90,9 +90,7 @@ class GameManager
         backgroundSprite.scale.x = 1000;
         backgroundSprite.scale.y = backgroundSprite.scale.x * 0.695;
 
-
         scene.add( backgroundSprite );
-
 
         var metresToTravel = DistMath.ConvertMilesToMetre(GM.distanceToTravel);
 
@@ -112,9 +110,24 @@ class GameManager
         var isStarting = true;
         var startCounter = 0;
 
+        var gameWonCounter = 0;
+
 
         var distanceTraveledUI = document.getElementById("distTraveled");
         var progressUI_Manager = new ProgressUIManager();
+
+        var speedDecreaseAmount = P_Controller.speed / 60;
+
+
+        var playerWonFrameLocations = [
+            'Images/Ride_Static.png',
+            'Images/TurnRight.png',
+            'Images/Foldout4.png',
+            'Images/Foldout3.png',
+            'Images/Foldout2.png',
+            'Images/Foldour1.png'
+        ];
+        var gameWon_EndScreenPlayerAnimator = new TwoD_Animator(playerWonFrameLocations, P_Controller.sprite.material, 15);
 
         // Game loop
         function Loop()
@@ -142,6 +155,36 @@ class GameManager
             }
             if(GM.hasWon)
             {
+                gameWonCounter++;
+                if(gameWonCounter < 60)
+                {
+                    P_Controller.speed -= speedDecreaseAmount;
+                    if(P_Controller.speed < 0)
+                    {
+                        P_Controller.sprite = 0;
+                    }
+                    P_Controller.Update();
+                }
+
+                if(gameWonCounter > 60 && gameWonCounter < 150)
+                {
+                    // Animate the player
+                    gameWon_EndScreenPlayerAnimator.Update();
+                }
+
+                if(gameWonCounter > 150 && gameWonCounter < 210)
+                {
+                    CamControl.offset.y += 0.1;
+                    particles
+                }
+
+                if(gameWonCounter == 230)
+                {
+                    GM.RemoveUI();
+
+                    // Show won UI
+                    var WonUI = new WonscreenUI();
+                }
                 Ob_Manager.goalManager.Update();
                 return;
             }            
@@ -166,8 +209,6 @@ class GameManager
             {
                 IncreaseSpeed();
             }else{speedHasIncreased = false;}
-
-
             
             // Update UI
             var percentTraveled = (P_Controller.distTraveled / metresToTravel) * 100;
@@ -338,12 +379,7 @@ class GameManager
 
     WonGame()
     {
-        console.log("Game is won!");
-
-        this.RemoveUI();
-
-        // Show won UI
-        var WonUI = new WonscreenUI();
+        
         this.hasWon = true;
     }
 
@@ -373,7 +409,6 @@ class GameManager
         this.hasLost = false;
         this.hasWon = false;        
         // Starting the main game loop.
-
 
         this.GameLoop(camera, scene, renderer, this);
         

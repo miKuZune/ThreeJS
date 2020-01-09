@@ -38,7 +38,7 @@ class ControlsScreen
         controlsContainer.appendChild(text_container);
         // Text 1
         var text1 = document.createElement('p');
-        text1.innerHTML = 'AVOID THE OBSTACLES AND MAKE IT HOME FOR CHRISTMAS';
+        text1.innerHTML = 'AVOID THE OBSTACLES AND MAKE IT HOME FOR CHRISTMAS.';
         text1.setAttribute('class', 'controls_text');
         text1.setAttribute('id', 'controls_text1');
 

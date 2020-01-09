@@ -252,21 +252,25 @@ button
 
 .wonScreenText
 {
-    position: absolute;
-
-    width:100%;
     text-align: center;
     color:white;
 }
 
+#wonScreen_textContainer
+{
+    position: absolute;
+    width:100%;
+    top:250px;
+}
+
 #wonScreenText1
 {
-    top:250px;
+    
 }
 
 #wonScreenText2
 {
-    top:300px;
+    margin:0 15%;
 }
 
 .evansStoreButton
@@ -330,34 +334,71 @@ button
 
 #startScreen_hero
 {
-    width: 800px;
+    width: 45vh;
     position: absolute;
     top: 25px;
-    left: calc(50% - 400px);
+    left: calc(50% - 45vh / 2);
+}
+
+/* Start Screen "Scene" Elements */
+#startScreen_obstacle_one
+{
+    position: absolute;
+    left:20%;
+    bottom:40%;
+
+    width:15%;
+}
+
+#startScreen_obstacle_two 
+{
+    position: absolute;
+    right:13%;
+    bottom:33%;
+
+    width:25%;
+    max-width: 400px;
+}
+
+#startScreen_player
+{
+    position: absolute;
+    left:32%;
+    top:44%;
+
+    width:30%;
+    max-width: 500px;
 }
 
 #startScreen_textContainer
 {
     position: absolute;
     width: 100%;
-    bottom: 200px;
+    bottom: 105px;
 }
 
 .startScreen_text
 {
     text-align: center;
     color:white;
-    margin:20px 30%;
+    margin:20px;
+    font-size: 1.2vh;
 }
 
 #startScreen_text1
 {
-    font-size: 24px;
+    font-size: 2vh;
+    margin:0 24%;
 }
 
 #startScreen_text2
 {
-    margin:20px 35%;
+
+}
+
+#startScreen_text2 p
+{
+    margin:0;
 }
 
 #startScreen_nextButton
@@ -404,33 +445,35 @@ button
 {
     position: absolute;
     top: 25px;
-    left: calc(50% - 150px);
+    left: calc(50% - 100px);
+    width:200px;
 }
 
 #controls_hero
 {
     position: absolute;
     top: 180px;
-    width: 75%;
-    left: calc(50% - (75% / 2));
+    width: 40vw;
+    left: calc(50% - (40vw / 2));
 }
 
 #controls_textContainer
 {
     position: absolute;
     width: 100%;
-    bottom: 300px;
+    bottom: 150px;
 }
 
 .controls_text
 {
     text-align: center;
     color:white;
+    font-size: 2vh;
 }
 
 #controls_text1
 {
-
+    margin:5% 28%;
 }
 
 #controls_text2
@@ -445,7 +488,6 @@ button
 {
 
 }
-
 
 #controls_nextButton
 {
@@ -470,10 +512,9 @@ button
     margin:12.5%;
 }
 
-
 progress::-webkit-progress-bar {
     background-color: rgb(115,115,115);
-  }
-  progress::-webkit-progress-value {
+}
+progress::-webkit-progress-value {
     background-color: white;
-  }
+}

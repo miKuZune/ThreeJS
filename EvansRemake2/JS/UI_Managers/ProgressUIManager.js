@@ -60,7 +60,6 @@ class ProgressUIManager
                 if(this.progressBarItems[i].getAttribute("style") != this.activeProgressIndicatorText)
                 {
                     this.progressBarItems[i].setAttribute("style", this.activeProgressIndicatorText);
-                    console.log("updated new bar");
                     if(i < 4 && i > 0)
                     {
                         this.ShowText();

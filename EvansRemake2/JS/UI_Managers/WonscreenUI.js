@@ -16,20 +16,27 @@ class WonscreenUI
         congtratzImage.setAttribute("id", "congratizImg");
 
         container.appendChild(congtratzImage);
+
+        // Text container
+        var text_container = document.createElement('div');
+        text_container.setAttribute('id', 'wonScreen_textContainer');
+
+        container.appendChild(text_container);
+
         // Text 1
         var text1 = document.createElement("p");
         text1.innerHTML = "YOU'VE MADE IT HOME";
         text1.setAttribute("class", "wonScreenText");
         text1.setAttribute("id", "wonScreenText1");
 
-        container.appendChild(text1);
+        text_container.appendChild(text1);
         // Text 2 (long)
         var text2 = document.createElement("p");
         text2.innerHTML = "YOU HAVE BEEN ENTERED INTO OUR BROMPTON COMPETITION TO WIN A BROMPTON M6L! WHY NOT CHALLENGE YOUR FRIENDS.";
         text2.setAttribute("class", "wonScreenText");
         text2.setAttribute("id", "wonScreenText2");
 
-        container.appendChild(text2);
+        text_container.appendChild(text2);
         // Evans store button
         var evansStoreButton = document.createElement("button");
         evansStoreButton.innerHTML = "EVANS STORE";

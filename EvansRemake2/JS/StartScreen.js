@@ -2,9 +2,6 @@ class StartScreen
 {
     constructor()
     {
-        console.log("Starting the starting screen starter");
-        //this.StartGame();
-
         var body = document.body;
 
         // Container for all elements
@@ -35,8 +32,23 @@ class StartScreen
         heroImg.setAttribute('src', 'Images/RidingHomeForChristmas.png');
 
         startScreenContainer.appendChild(heroImg);
-        // "Scene" images
 
+        // "Scene" images
+        var obstacle_one = document.createElement('img');
+        var obstacle_two = document.createElement('img');
+        var player = document.createElement('img');
+
+        obstacle_one.setAttribute('id', 'startScreen_obstacle_one');
+        obstacle_two.setAttribute('id', 'startScreen_obstacle_two');
+        player.setAttribute('id', 'startScreen_player');
+
+        obstacle_one.setAttribute('src', 'Images/Trunk.png');
+        obstacle_two.setAttribute('src', 'Images/Tree1.png');
+        player.setAttribute('src', 'Images/HomeScreenGuy.png');
+
+        startScreenContainer.appendChild(obstacle_one);
+        startScreenContainer.appendChild(obstacle_two);
+        startScreenContainer.appendChild(player);
 
         // Text container
         var textContainer = document.createElement('div');
