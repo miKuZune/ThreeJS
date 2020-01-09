@@ -87,12 +87,26 @@ class ShareUI
 
         // Event listeners
         body.addEventListener('mouseup', OnMouseUp);
+        body.addEventListener('touchend', OnTouchInput);
 
         function OnMouseUp(e)
         {
             var xPos = e.clientX;
             var yPos = e.clientY;
 
+            CheckForUIHide(yPos);
+        }
+
+        function OnTouchInput(e)
+        {
+            var touchPos_X = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+            var touchPos_Y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+
+            CheckForUIHide(touchPos_Y);
+        }
+
+        function CheckForUIHide(yPos)
+        {
             var screenHeight = window.innerHeight;
             var deadZoneHeight = 250;
             var deadZonePos = screenHeight - deadZoneHeight
