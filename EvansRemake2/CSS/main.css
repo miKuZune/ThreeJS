@@ -512,6 +512,23 @@ button
     margin:12.5%;
 }
 
+#shareContainer
+{
+    position: absolute;
+    width:100%;
+    bottom:0;
+    background: rgba(0,0,0, 0.8);
+    min-height: 250px;
+    text-align: center;
+}
+
+.shareButtonLink
+{
+    width:8vw;
+    height: 8vw;
+    margin:8vw 2vw;
+}
+
 progress::-webkit-progress-bar {
     background-color: rgb(115,115,115);
 }

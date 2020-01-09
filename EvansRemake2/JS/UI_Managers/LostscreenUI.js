@@ -92,7 +92,7 @@ class LostscreenUI
         shareButton.setAttribute("id", "shareButton");
 
         shareButton.addEventListener("click", function(){
-            alert("Share!?!");
+            var sharer = new ShareUI();
         })
     }
 }

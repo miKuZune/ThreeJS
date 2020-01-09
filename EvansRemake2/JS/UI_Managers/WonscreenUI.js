@@ -64,12 +64,9 @@ class WonscreenUI
         shareButton.setAttribute("class", "wonScreen_ShareButton");
 
         shareButton.addEventListener("click", function(){
-            alert("share?!?");
+            var sharer = new ShareUI();
         });
 
         container.appendChild(shareButton);
-
     }
-
-
 }
