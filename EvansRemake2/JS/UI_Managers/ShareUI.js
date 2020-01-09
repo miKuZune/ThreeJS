@@ -93,8 +93,9 @@ class ShareUI
             var xPos = e.clientX;
             var yPos = e.clientY;
 
-            var screenHeight = screen.height;
-            var deadZonePos = screenHeight - (screenHeight * 0.255);
+            var screenHeight = window.innerHeight;
+            var deadZoneHeight = 250;
+            var deadZonePos = screenHeight - deadZoneHeight
 
             if(yPos < deadZonePos)
             {  

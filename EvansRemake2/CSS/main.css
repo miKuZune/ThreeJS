@@ -524,9 +524,9 @@ button
 
 .shareButtonLink
 {
-    width:8vw;
-    height: 8vw;
-    margin:8vw 2vw;
+    width:100px;
+    height: 100px;
+    margin:75px 25px;
 }
 
 progress::-webkit-progress-bar {
