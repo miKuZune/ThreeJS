@@ -20,6 +20,7 @@ class ObstacleManager
 
         var poolNumber = 25;
         var sideSignPoolNumber = 17;
+        var roadSidePoolNumber = 20;
 
         this.ObstacleArray = new Array(poolNumber);
 
@@ -35,6 +36,11 @@ class ObstacleManager
             this.sideSignsArray[i] = new SideSign(scene,player, this, this.gameManager);
         }
 
+        this.roadSideObjectsArray = new Array(roadSidePoolNumber);
+        for(var i = 0; i < roadSidePoolNumber; i++)
+        {
+            this.roadSideObjectsArray[i] = new RoadSideObjects(scene,player, this, this.gameManager);
+        }
 
         // set object variables
         this.currentID = 0;
@@ -51,7 +57,7 @@ class ObstacleManager
 
         this.sideObjectsPassed = 0;
 
-        this.sideObjectPositionX_Base = 7;
+        this.sideObjectPositionX_Base = 9;
 
         this.distanceBetweenSideObjects = 40;
 
@@ -63,13 +69,24 @@ class ObstacleManager
         ];
         this.sideObjectImgSrcCurrID = 0;
 
-
         var distMath = new DistanceMaths();
         this.maxSideObjects = Math.floor( distMath.ConvertMilesToMetre( gameManager.distanceToTravel ) / this.distanceBetweenSideObjects);
+
+        // Road side objects
+        this.currentRoadSideObjectID = 0;
+        this.roadSideObjectsIterated = 0;
+        this.roadSideObjects_recentZ = -5;
+
+        this.roadSideObjectsPassed = 0;
+
+        this.distanceBetween_roadSideObjects = 10.5;
+        this.maxRoadSideObjects = Math.floor( distMath.ConvertMilesToMetre( gameManager.distanceToTravel ) / this.distanceBetween_roadSideObjects );
+        this.maxRoadSideObjects += 10;
 
         // Perform neccessary methods
         this.PositionObjects(poolNumber);
         this.PositionSideObjects(sideSignPoolNumber);
+        this.PositionRoadSideObjects(roadSidePoolNumber);
 
         this.goalManager = new GoalManager();
     }
@@ -110,6 +127,7 @@ class ObstacleManager
             this.sideSignsArray[this.currentSideObjectID].SetZ_Position(this.sideObjects_RecentZ);
             this.sideSignsArray[this.currentSideObjectID].passedPlayer = false;
 
+            // Choose the right of left image version and place them on the correct side.
             if(this.sideObjectsIterated % 2 == 0)
             {
                 this.sideSignsArray[this.currentSideObjectID].SetImgSprite(this.sideObjectsImageSources[this.sideObjectImgSrcCurrID] + '_Right.png');
@@ -139,26 +157,49 @@ class ObstacleManager
         }
     }
 
+    PositionRoadSideObjects(numberOfObjects)
+    {
+        for(var i = 0; i < numberOfObjects; i++)
+        {
+            if(this.roadSideObjectsIterated >= this.maxRoadSideObjects)
+            { return; }
+
+            this.roadSideObjects_recentZ = this.roadSideObjects_recentZ + this.distanceBetween_roadSideObjects;
+            this.roadSideObjectsArray[this.currentRoadSideObjectID].SetZ_Position(this.roadSideObjects_recentZ);
+            this.roadSideObjectsArray[this.currentRoadSideObjectID].passedPlayer = false;
+
+            this.currentRoadSideObjectID++;
+
+            if(this.currentRoadSideObjectID >= this.roadSideObjectsArray.length)
+            { this.currentRoadSideObjectID = 0; }
+
+            this.roadSideObjectsIterated++;
+        }
+    }
+
     UpdateObstacles()
     {
         for(var i = 0; i < this.ObstacleArray.length; i++)
-        {
-            this.ObstacleArray[i].Update();
-        }
+        { this.ObstacleArray[i].Update(); }
     }
 
     UpdateSideObjects()
     {
         for(var i = 0; i < this.sideSignsArray.length; i++)
-        {
-            this.sideSignsArray[i].Update();
-        }
+        { this.sideSignsArray[i].Update(); }
+    }
+
+    UpdateRoadSideObjects()
+    {
+        for(var i = 0; i < this.roadSideObjectsArray.length; i++)
+        { this.roadSideObjectsArray[i].Update(); }
     }
 
     Update()
     {
         this.UpdateObstacles();
         this.UpdateSideObjects();
+        this.UpdateRoadSideObjects();
         this.goalManager.Update();
     }
 
@@ -184,6 +225,16 @@ class ObstacleManager
         if(this.sideObjectsPassed % this.obstaclesToPassToReiterate == 0 && this.sideObjectsPassed > 0)
         {
             this.PositionSideObjects(this.obstaclesToPassToReiterate);
+        }
+    }
+
+    PassedRoadSideObject()
+    {
+        this.roadSideObjectsPassed++;
+
+        if(this.roadSideObjectsPassed % this.obstaclesToPassToReiterate == 0 && this.roadSideObjectsPassed > 0)
+        {
+            this.PositionRoadSideObjects(this.obstaclesToPassToReiterate);
         }
     }
 

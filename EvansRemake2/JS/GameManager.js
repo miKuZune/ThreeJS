@@ -145,6 +145,8 @@ class GameManager
             if(isStarting == true)
             {
                 GameStartUpdate();
+                floorMesh.position.z = P_Controller.sprite.position.z;
+                grassMesh.position.z = floorMesh.position.z;
                 return;
             }
 

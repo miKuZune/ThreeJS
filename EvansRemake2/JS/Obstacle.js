@@ -24,9 +24,9 @@ class Obstacle
         this.object = new THREE.Sprite( null );
         this.ChooseNewImage();
 
-        this.object.position.y = -2;
+        this.object.position.y = -1.9;
 
-        this.object.scale.x = 1.5;
+        this.object.scale.x = 2.5;
         this.object.scale.y = this.object.scale.x * 1.617;
 
         scene.add( this.object );
