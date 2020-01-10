@@ -11,7 +11,7 @@ class CameraController
         this.camera = camera;
         this.player = player;
 
-        this.offset = new THREE.Vector3(0,1,5);
+        this.offset = new THREE.Vector3(0,1.25,3);
 
         this.targetFollower = new FollowTarget(camera, player, this.offset);
         this.targetFollower.SetFollowSpeed(7.5);
