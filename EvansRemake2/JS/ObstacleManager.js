@@ -57,7 +57,7 @@ class ObstacleManager
 
         this.sideObjectsPassed = 0;
 
-        this.sideObjectPositionX_Base = 9;
+        this.sideObjectPositionX_Base = 11;
 
         this.distanceBetweenSideObjects = 40;
 
